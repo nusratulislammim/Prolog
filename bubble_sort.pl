@@ -1,11 +1,18 @@
-bubble_sort([], []).
+bubble_sort(List, Sorted) :-
+    swap_pass(List, Result, Swapped),
+    ( Swapped = yes ->
+        bubble_sort(Result, Sorted)
+    ;
+        Sorted = Result
+    ).
 
-bubble_sort([A, B | T], [B | R]) :-
-    A > B,
-    bubble_sort([A | T], R).
+swap_pass([], [], no).
+swap_pass([X], [X], no).
 
-bubble_sort([A, B | T], [A | R]) :-
-    A =< B,
-    bubble_sort([B | T], R).
+swap_pass([X, Y | T], [Y | R], yes) :-
+    X > Y,
+    swap_pass([X | T], R, _).
 
-bubble_sort([X], [X]).
+swap_pass([X, Y | T], [X | R], Swapped) :-
+    X =< Y,
+    swap_pass([Y | T], R, Swapped).
